@@ -18,11 +18,17 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
 
-    - name: Make gradle wrapper executable
-      run: chmod +x ./gradlew
+    # Эта строка больше не будет ломать сборку, если файла gradlew нет
+    - name: Make gradlew executable (if exists)
+      run: if [ -f ./gradlew ]; then chmod +x ./gradlew; fi
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '7.6.4' # Версия Gradle для 1.12.2
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: gradle build # Используем системный gradle, а не ./gradlew
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
