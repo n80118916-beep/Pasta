@@ -2,7 +2,7 @@ name: Build TusiClient Mod
 
 on:
   push:
-    branches: [ "main", "master", "1.12.2" ]
+    branches: [ "main", "master" ]
   workflow_dispatch:
 
 jobs:
@@ -18,17 +18,15 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
 
-    # Эта строка больше не будет ломать сборку, если файла gradlew нет
-    - name: Make gradlew executable (if exists)
-      run: if [ -f ./gradlew ]; then chmod +x ./gradlew; fi
-
+    # Этот шаг сам установит Gradle нужной версии
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '7.6.4' # Версия Gradle для 1.12.2
+        gradle-version: '7.6.4' # Стабильная версия для Forge 1.12.2
 
+    # Собираем проект с помощью установленного Gradle, а не ./gradlew
     - name: Build with Gradle
-      run: gradle build # Используем системный gradle, а не ./gradlew
+      run: gradle build
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
