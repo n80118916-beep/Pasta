@@ -18,13 +18,11 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
 
-    # Этот шаг сам установит Gradle нужной версии
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '7.6.4' # Стабильная версия для Forge 1.12.2
+        gradle-version: '6.9.4' # Откат на версию, где есть compile
 
-    # Собираем проект с помощью установленного Gradle, а не ./gradlew
     - name: Build with Gradle
       run: gradle build
 
